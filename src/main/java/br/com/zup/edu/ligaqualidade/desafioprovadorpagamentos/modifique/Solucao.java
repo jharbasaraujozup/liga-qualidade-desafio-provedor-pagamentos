@@ -1,5 +1,13 @@
 package br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique;
 
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique.convert.ConvertInfoAdiantamentoToDadosRecebimentoAdiantamento;
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique.convert.ConvertInfoTransacoesToDadosTransacao;
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique.domain.OrdemDeRecebimento;
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique.transacoes.ExecutaTransacao;
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.pronto.DadosRecebimentoAdiantado;
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.pronto.DadosTransacao;
+import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.pronto.MetodoPagamento;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -32,7 +40,13 @@ public class Solucao {
 	 * É esperado que o retorno respeite a ordem de recebimento
 	 */
 	public static List<String[]> executa(List<String> infoTransacoes, List<String> infoAdiantamentos) {
-		
+
+
+		final List<DadosTransacao> dadosTransacao = new ConvertInfoTransacoesToDadosTransacao().convertInfoTransacoesToDadosTransacao(infoTransacoes);
+		final List<DadosRecebimentoAdiantado> dadosRecebimentoAdiantado = new ConvertInfoAdiantamentoToDadosRecebimentoAdiantamento().convertInfoAdiantamentoToDadosRecebimentoAdiantamento(infoAdiantamentos);
+
+		final List<OrdemDeRecebimento> ordemDeRecebimentos = new ExecutaTransacao().executaTransacao(dadosTransacao, dadosRecebimentoAdiantado);
+
 		return List.of(new String[][] { 
 					 {"pago","200","194","04/03/2021"} 					 
 					}); 
