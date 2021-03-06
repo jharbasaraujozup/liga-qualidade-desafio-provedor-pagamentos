@@ -3,6 +3,7 @@ package br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique.transac
 import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.modifique.domain.StatusRecebimento;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 public class CartaoDebito implements Cartao {
@@ -11,7 +12,7 @@ public class CartaoDebito implements Cartao {
 
     @Override
     public StatusRecebimento statusRecebimento() {
-        return StatusRecebimento.AGUARDANDO_PAGAMENTO;
+        return StatusRecebimento.PAGO;
     }
 
     @Override
@@ -21,7 +22,7 @@ public class CartaoDebito implements Cartao {
 
     @Override
     public BigDecimal calculaValorRecebimentoDescontandoTaxaTransacao(BigDecimal valorCompra) {
-        var valorTaxa  = valorCompra.multiply(new BigDecimal(VALOR_TAXA));
+        var valorTaxa  = valorCompra.multiply(new BigDecimal(VALOR_TAXA)).setScale(0, RoundingMode.HALF_EVEN);
         return valorCompra.subtract(valorTaxa);
     }
 

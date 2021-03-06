@@ -16,7 +16,7 @@ public class ExecutaTransacao {
     public List<OrdemDeRecebimento> executaTransacao(final List<DadosTransacao> listaDadosTransacao, final List<DadosRecebimentoAdiantado> listaDadosRecebimentoAdiantado){
         for(DadosTransacao dadosTransacao: listaDadosTransacao){
             final Optional<DadosRecebimentoAdiantado> dadosRecebimentoAdiantado = listaDadosRecebimentoAdiantado.stream().filter(recebimentoAdiantado -> recebimentoAdiantado.idTransacao == dadosTransacao.id).findAny();
-            listaOrdemRecebimento.add( calculaOrderRecebimento.calculaOrderRecebimento(dadosTransacao,dadosRecebimentoAdiantado.get() ));
+            listaOrdemRecebimento.add( calculaOrderRecebimento.calculaOrderRecebimento( dadosTransacao, dadosRecebimentoAdiantado ));
         }
         return listaOrdemRecebimento;
     }

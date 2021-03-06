@@ -9,7 +9,9 @@ import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.pronto.DadosTransa
 import br.com.zup.edu.ligaqualidade.desafioprovadorpagamentos.pronto.MetodoPagamento;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Solucao {
 
@@ -47,9 +49,18 @@ public class Solucao {
 
 		final List<OrdemDeRecebimento> ordemDeRecebimentos = new ExecutaTransacao().executaTransacao(dadosTransacao, dadosRecebimentoAdiantado);
 
-		return List.of(new String[][] { 
-					 {"pago","200","194","04/03/2021"} 					 
-					}); 
+		List<String[]> recebimentos = new ArrayList();
+
+		for(OrdemDeRecebimento ordem: ordemDeRecebimentos) {
+			recebimentos.add(new String[]{
+				ordem.getStatusRecebimento().status,
+				ordem.getValorOriginal().toString(),
+				ordem.getValorASerRecebidoDeFato().toString(),
+				ordem.getDataEsperadoRecebimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+			});
+		}
+
+		return recebimentos;
 	}
 
 }
