@@ -11,11 +11,12 @@ import java.util.Optional;
 public class ExecutaTransacao {
 
     List<OrdemDeRecebimento> listaOrdemRecebimento = new ArrayList<>();
-    CalculaOrderRecebimento calculaOrderRecebimento = new CalculaOrderRecebimento();
 
     public List<OrdemDeRecebimento> executaTransacao(final List<DadosTransacao> listaDadosTransacao, final List<DadosRecebimentoAdiantado> listaDadosRecebimentoAdiantado){
         for(DadosTransacao dadosTransacao: listaDadosTransacao){
             final Optional<DadosRecebimentoAdiantado> dadosRecebimentoAdiantado = listaDadosRecebimentoAdiantado.stream().filter(recebimentoAdiantado -> recebimentoAdiantado.idTransacao == dadosTransacao.id).findAny();
+
+            CalculaOrderRecebimento calculaOrderRecebimento = new CalculaOrderRecebimento(dadosTransacao.metodo);
             listaOrdemRecebimento.add( calculaOrderRecebimento.calculaOrderRecebimento( dadosTransacao, dadosRecebimentoAdiantado ));
         }
         return listaOrdemRecebimento;

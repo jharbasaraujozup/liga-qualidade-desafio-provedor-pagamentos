@@ -6,24 +6,24 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
-public class CartaoCredito implements Cartao {
+public class CartaoCredito extends Cartao {
 
     private static final double VALOR_TAXA = 0.05;
+    private static final Integer DAYS_FOR_RECEIPT = 30;
+    private static final StatusRecebimento STATUS_DEFAULT = StatusRecebimento.AGUARDANDO_PAGAMENTO;
 
     @Override
-    public StatusRecebimento statusRecebimento() {
-        return StatusRecebimento.AGUARDANDO_PAGAMENTO;
+    public double getTaxaOperacao() {
+        return VALOR_TAXA;
     }
 
     @Override
-    public LocalDate calculaDataRecebimento(LocalDate dataTransacao) {
-
-        return dataTransacao.plusDays(30);
+    protected Integer getDaysForReceipt() {
+        return DAYS_FOR_RECEIPT;
     }
 
     @Override
-    public BigDecimal calculaValorRecebimentoDescontandoTaxaTransacao(BigDecimal valorCompra) {
-        var valorTaxa  = valorCompra.multiply(new BigDecimal(VALOR_TAXA)).setScale(0, RoundingMode.HALF_EVEN);
-        return valorCompra.subtract(valorTaxa);
+    protected StatusRecebimento getStatusDefault() {
+        return STATUS_DEFAULT;
     }
 }
